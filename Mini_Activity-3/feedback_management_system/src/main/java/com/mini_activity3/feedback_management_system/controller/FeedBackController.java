@@ -4,6 +4,7 @@ package com.mini_activity3.feedback_management_system.controller;
 import com.mini_activity3.feedback_management_system.dto.ResponseDTO;
 import com.mini_activity3.feedback_management_system.dto.FeedBackDTO;
 
+import com.mini_activity3.feedback_management_system.entity.Feedback;
 import com.mini_activity3.feedback_management_system.repository.FeedBackRepository;
 import com.mini_activity3.feedback_management_system.service.FeedBackService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,8 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-public class FeedBackController<FeedBackDTO, FeedBack> {
+@RequestMapping
+public class FeedBackController {
     @Autowired
     private FeedBackService feedBackService;
 
@@ -23,13 +25,14 @@ public class FeedBackController<FeedBackDTO, FeedBack> {
     private FeedBackRepository feedBackRepository;
 
     @GetMapping("/feedback/get")
-    public List<FeedBack> getFeedBack(){
+    public List<Feedback> getFeedBack(){
         log.info("getting all feedbacks");
         return feedBackService.getFeedBacks();
     }
 
     @GetMapping("/feedback/get/{id}")
-    public Optional getByID(@PathVariable long id){
+    public Optional<Feedback> getByID(@PathVariable Long id){
+        log.info(String.valueOf(id));
 
         return feedBackRepository.findById(id);
     }
@@ -37,7 +40,7 @@ public class FeedBackController<FeedBackDTO, FeedBack> {
     @PostMapping("/feedback/write")
     public ResponseDTO createFeedBack(@RequestBody FeedBackDTO feedBackDTO){
         log.info("Writing feedback");
-        return feedBackService.createFeedBack((com.mini_activity3.feedback_management_system.dto.FeedBackDTO) feedBackDTO);
+        return feedBackService.createFeedBack(feedBackDTO);
     }
 
 
